@@ -1,0 +1,286 @@
+body{
+	width: 900px;
+	margin: 0 auto;
+	background: #E0E0E0;	
+}
+
+select{
+	width: 260px;
+	height: 20px;
+}
+
+.formInput{
+	width: 260px;
+	line-height: 35px;
+	text-align: center;
+	margin-top: 10px;
+	border: 0;
+}
+
+#submitExpenseFormButton{
+	width: 260px;
+/*	background-color: rgba(34,139,34, 0.6);		*/
+	background: rgba(204,102,0,0.7);
+	line-height: 35px;
+	font-size: 16px;
+	color: white;
+	
+	border: 0;
+}
+#deleteExpenseButton{
+	border-radius: 50%;
+	border: 3px solid rgba(128,0,0,0.5);
+	
+	background: white;
+	color: red;
+	
+	height: 25px;
+	width: 25px;
+	
+	text-align: center;
+}
+
+#enterGoals{
+	width: 260px;
+	margin-top: -10px;
+	padding-bottom: 30px;
+	
+	border-bottom: 1px solid #585858;
+}
+#enterExpenses{
+	margin-top: 25px;
+	width: 260px;
+}
+#expenseDatePicker{
+	width: 400px;
+	margin-top: 15px;
+	margin-bottom: 15px;
+}
+
+#bannerTitle{
+	display: inline;
+}
+#title{
+	text-align: center;
+	margin-bottom: 5px;
+	font-family: georgia;
+	font-size: 50px;
+}
+#content{
+	text-align: center;
+	font-family: georgia;
+	font-size: 15px;
+
+	position: relative;
+}
+
+#listTitle, #analyticsTopTitle{
+	background: rgba(34,139,34, 0.6);
+	line-height: 60px;
+	margin-top: 0px;
+	
+	color: white;
+}
+#analyticsTopTitle{
+	margin-bottom: 50px;
+}
+
+#navigationButtons{
+	display: inline-block;
+}
+.toggleButton{
+	border: 0;
+	height: 60px;
+	width: 60px;
+	border-radius: 50%;
+	
+	background: rgba(34,139,34, 0.6);
+	color: white;
+	
+	float: left;
+	
+	margin-bottom: 22px;
+}
+#lastToggleButton{
+	margin-bottom: -22px;
+}
+
+#expenseTable, #analyticsTable{
+	margin: 0 auto;
+}
+td{
+	padding: 5px;
+	border-bottom: 1px solid #E0E0E0;
+}
+#analyticsTable{
+	padding: 10px;
+}
+
+#expense-list{
+	width: 710px;
+	height: 308px;
+	
+	margin-left: 53px;
+	margin-right: -30px;
+	padding-bottom: 20px;
+	
+	float: left;	
+	
+	background: white;
+	border: 0;
+	
+	position: relative;
+	
+	overflow-y: auto;
+	box-shadow: inset 0px -15px 30px 0px rgba(225,225,225,0.6);	
+	
+	-webkit-animation-duration: 0.2s;
+}
+#expense-form{
+	width: 270px;
+	float: right;
+	
+	margin-right: 44px;	
+	
+	right: 0px;
+	display: none;
+	-webkit-animation-duration: 0.3s;
+}
+
+#stats{
+	width: 900px;
+	float: right;
+	margin-top: 20px;
+}
+
+/*Analytics Header and Tail divs are no longer used*/
+#analyticsHeader, #sideDate{
+	display: inline;
+	vertical-align: middle;
+}
+.nav{
+	margin: 0 auto;
+	width: 790px;
+	
+/*	border-top: 1px solid white;	*/
+	padding-top: 5px;
+	margin-bottom: -10px;
+}
+#analytics{
+	display: none;
+	
+	position: relative;
+	border: 0;
+	background: white;
+	
+	width: 710px;
+	float: left;
+	margin-left: 53px;
+	margin-right: -30px;
+	
+	-webkit-animation-duration: 0.15s;
+}
+#predictions{
+	display: none;
+}
+
+
+canvas{
+	margin: 10px;
+	border: 1px solid #D3D3D3;
+	border: 0;
+	padding: 25px;
+	background: white;
+}
+.canvasChart{
+	text-align: center;
+	display: inline-block;
+}
+
+#goalChartTitle, #expenseChartTitle, #categoryChartTitle, #timeChartTitle, #expenseByTimeTitle, #analyticsTitle, #analyticsTail, #expenseByTimeTail, #timeChartTail, #categoryChartTail, #expenseChartTail, #goalChartTail{
+	font-size: 20px;
+	line-height: 45px;
+	
+	width: 250px;
+	margin: 0 auto;
+	margin-bottom: -8px;
+	
+	background: white;
+	border: 0;
+}
+
+#goalChartText{
+	position: absolute;
+	
+	margin-left: 90px;
+	margin-top: 98px;
+	font-size: 32px;
+}
+#innerGoalChartText{
+	font-size: 17px;
+}
+#goalChartTail{
+	background: rgba(0,0,100, 0.5);
+}
+#expenseChartTail{
+	background: rgba(100,100,100,0.5);
+}
+#categoryChartTail{
+	background: rgba(200,0,0,0.5);
+}
+#goalChartTail, #expenseChartTail, #categoryChartTail{
+	margin-bottom: 20px;
+	margin-top: -13px;
+}
+
+#expenseChartText{
+	position: absolute;
+	font-size: 30px;
+	margin-left: 440px;
+	margin-top: -165px;
+}
+
+#categoryChartText{
+	position: absolute;
+	font-size: 30px;
+	margin-left: 725px;
+	margin-top: -165px;
+}
+
+#timeChartText{
+	position: absolute;
+	font-size: 30px;
+	margin-left: 155px;
+	margin-top: 120px;
+}
+#timeChartTail{
+	margin-top: -13px;
+	background: rgba(0,0,220,0.5);
+}
+
+#expenseByTimeTitle{
+	width: 520px;
+}
+#expenseByTimeTail{
+	margin-top: -13px;
+	margin-bottom: 15px;
+	width: 520px;
+	background: rgba(151,187,205,1);
+}
+
+#analyticsTitle{
+	margin-top: 6px;
+	margin-bottom: 2px;
+	width: 790px;
+}
+#analyticsTail{
+	margin-top: 2px;
+	width: 790px;
+}
+
+#mainTailText{
+	font-size: 25px;
+}
+#innerTailText{
+	font-size: 18px;
+}

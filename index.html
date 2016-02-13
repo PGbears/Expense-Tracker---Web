@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html ng-app="expenseTracker">
+	<head>
+		<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="style.css">
+		<link rel="stylesheet" type="text/css" href="animate.css">
+		
+  	 	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
+		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular-resource.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.1-beta.2/Chart.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+		<script src="angles.js"></script>
+		<script src="core.js"></script>
+	</head>
+	
+	<body ng-controller="mainController">
+		<div id="titleBanner">
+		<h1 id="title"><strong>Trace</strong></h1>
+		
+		<!--Duration display for entire dashboard-->
+		<ul class="nav nav-tabs">
+		  <li role="presentation"><a href ng-click="display('today')">Today</a></li>
+		  <li role="presentation"><a href ng-click="display('week')">Last Week</a></li>
+		  <li role="presentation"><a href ng-click="display('month')">Last Month</a></li>
+		  <li role="presentation"><a href ng-click="display('year')">Last Year</a></li>
+		</ul>
+		<br>
+		</div>
+		
+		<div id="content">
+			<div>
+				<div id="expense-form">
+					<form id="enterGoals" ng-submit="addGoal()">
+						<input type="text" placeholder="Goal" class="formInput" ng-model="goalData.value" required></input><br/>
+						<input id="submitExpenseFormButton" class="formInput" type="submit" value="Submit Goal"></input>
+					</form>
+				
+					<form id="enterExpenses" ng-submit="addExpense()">
+						<p></p>
+						<select ng-model="expenseData.category">
+							<option ng-repeat="category in categories" value="{{category}}">{{category}}</option>
+						</select><br/>
+						<input type="text" placeholder="Item" class="formInput" ng-model="expenseData.place" required></input><br/>
+						<input type="number" step="any" placeholder="Amount" class="formInput" ng-model="expenseData.amount" required></input><br/>
+				
+						<input id="submitExpenseFormButton" class="formInput" type="submit" value="Add Expense"></input>
+					</form>
+				</div>
+		
+			<div id="navigationButtons">
+				<button class="toggleButton" id="showExpenseFormButton" ng-click="showExpenseForm()">+</button><br>
+				<button class="toggleButton" id="showExpenseListButton" ng-click="showExpenseList()">L</button><br>
+				<button class="toggleButton" id="showAnalyticsButton" ng-click="showAnalytics()">A</button><br>
+				<button class="toggleButton" id="lastToggleButton" ng-click="showPredictions()">P</button>
+			</div>
+			
+			<div id="expense-list">
+				<h3 id="listTitle">List</h3>
+				<input type="date" placeholder="Select Date" class="formData" id="expenseDatePicker" ng-model="datePicker"></input>
+				
+				<table id="expenseTable">
+					<tr ng-repeat="expense in expenses | filter:datePicker">
+						<td><b>{{expense.place | capitalize}}</b></td> 
+						<td>{{expense.amount | currency}}</td>
+						<td><i> {{expense.date | date:'EEEE MMM d'}}</i></td> 
+						<td>({{expense.category}})</td>
+						<td><button id="deleteExpenseButton" ng-click="deleteExpense(expense._id)"></button></td>
+					</tr>
+				</table>
+			</div>
+			
+			<div id="analytics">
+				<h3 id="analyticsTopTitle">Summary Analytics</h3>
+				
+				<table id="analyticsTable">
+				<tr>
+					<td>Total Spent</td>
+					<td><strong>{{sum | currency}}</strong></td> 
+					<td><i>{{sum/timeFrame.value | currency}} {{timeFrame.label}}</i></td>
+				</tr>
+						
+				<tr>
+					<td>Most Expensive Item</td>
+					<td><strong>{{topExpense | capitalize}}</strong></td>
+					<td><i>{{mostExpensiveAmount/sum*100 | number:1}}% of total expenses</i></td>
+				</tr>
+					
+				<tr>
+					<td>Most Frequently Purchased</td>
+					<td><strong>{{mostFrequentExpense}}</strong></td> 
+					<td><i>{{sumFrequentExpense | currency}} | {{sumFrequentExpense/sum*100 | number:1}}% of total expenses</i></td>
+				</tr>
+				
+				<tr>
+					<td>Most Popular Category</td>
+					<td><strong>{{mostPopularCategory}}</strong></td>
+					<td><i>{{sumPopularCategory | currency}} | {{sumPopularCategory/sum*100 | number:1}}% of total expenses</i></td>
+				</tr>
+				
+				<tr>
+					<td>Most Active Time</td>
+					<td><strong>{{mostActiveTime}}</strong></td>
+					<td><i>between {{timeRange}}:00 - {{timeRange + 1}}:00</i></td>
+				</tr>
+			</table>
+				
+			</div>
+			
+			<div id="predictions">
+				
+			</div>
+			
+		</div>
+			
+			<div id="stats">
+			<!--	<h2 id="analyticsHeader"><strong>Analytics</strong></h2><h3 id="sideDate"><i> | {{datePrefix }}{{todaysDate | date:'EEEE MMMM d, yyyy'}} </i></h3><br><br>	-->
+					
+				<div id="charts">
+					<div class="canvasChart" id="goalChartDiv">
+						<div id="goalChartTitle">Goal</div>
+						<div id="goalChartText">{{sum/goal.value*100 | number:1}} %<p id="innerGoalChartText">of {{goal.value | currency}}</p></div>
+						<canvas id="goalChart" chart="Doughnut" data="goalChartData" options="goalChartOptions" width="250" height="250"></canvas>
+						<div id="goalChartTail"><span id="innerTailText">total</span><span id="mainTailText"><strong> {{sum | currency}}</strong></span></div>  
+					</div>	
+					
+					<div class="canvasChart" id="expenseByTimeDiv">
+						<div id="expenseByTimeTitle">Time-Expense</div>
+						<canvas chart="Line" data="expenseByTimeData" options="chartOptions" width="520" height="250"></canvas>
+						<div id="expenseByTimeTail"><span id="innerTailText">expensive</span><span id="mainTailText"><strong> {{topExpense | capitalize}}</strong></span></div>
+					</div>
+										
+					<div class="canvasChart" id="expenseChartDiv">
+						<div id="expenseChartTitle">Expenses</div>
+						<div id="expenseChartText"></div>
+						<canvas chart="Doughnut" data="expenseChartData" options="chartOptions" width="250" height="250"></canvas>
+						<div id="expenseChartTail"><span id="innerTailText">frequent</span><span id="mainTailText"><strong> {{mostFrequentExpense}}</strong></span></div>
+					</div>
+			
+					<div class="canvasChart" id="categoryChartDiv">
+						<div id="categoryChartTitle">Categories</div>
+						<div id="categoryChartText"></div>
+						<canvas chart="Doughnut" data="categoryChartData" options="chartOptions" width="250" height="250"></canvas>
+						<div id="categoryChartTail"><span id="innerTailText">popular</span><span id="mainTailText"><strong> {{mostPopularCategory | capitalize}}</strong></span></div>
+					</div>
+					
+					<div class="canvasChart" id="timeChartDiv">
+						<div id="timeChartTitle">Time</div>
+						<div id="timeChartText"></div>
+						<canvas chart="Doughnut" data="timeExpenseData" options="chartOptions" width="250" height="250"></canvas>
+						<div id="timeChartTail"><span id="innerTailText">active</span><span id="mainTailText"><strong> {{mostActiveTime}}</strong></div>
+					</div>
+				</div>
+				
+		<!--	<div id="analyticsTitle">Basic Statistics</div>
+				<div id="analyticsTail">Tail</div> 		-->
+				
+			</div>
+		</div>		
+	</body>
+</html>
